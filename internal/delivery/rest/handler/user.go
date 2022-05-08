@@ -14,9 +14,18 @@ func (h *Handler) register(c *gin.Context) {
 		return
 	}
 	_, err := h.service.Authorization.CreateUser(input)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		h.logger.Debugf("error created user: %s ", err.Error())
+
+	switch {
+	case err == nil:
+		c.Status(http.StatusOK)
+		return
+	case err == models.ErrorLoginExist:
+		newErrorResponse(c, http.StatusConflict, err.Error())
+		h.logger.Debugf("login: %s already exist", input.Login)
+		return
+	default:
+		newErrorResponse(c, http.StatusInternalServerError, "Internal Server Error")
+		h.logger.Debugf("Internal Server Error: %s", err.Error())
 		return
 	}
 }

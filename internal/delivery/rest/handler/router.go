@@ -19,12 +19,12 @@ func NewHandler(logger *logrus.Logger, service *service.Service) *Handler {
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
-	switch h.logger.GetLevel() {
-	case logrus.DebugLevel:
-		gin.SetMode(gin.DebugMode)
-	default:
-		gin.SetMode(gin.ReleaseMode)
-	}
+	//switch h.logger.GetLevel() {
+	//case logrus.DebugLevel:
+	//	gin.SetMode(gin.DebugMode)
+	//default:
+	//	gin.SetMode(gin.ReleaseMode)
+	//}
 	router := gin.New()
 	user := router.Group("/api/user")
 	{
