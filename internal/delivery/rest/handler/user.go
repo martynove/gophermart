@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/martynove/gophermart/internal/models"
 	"net/http"
@@ -14,11 +15,17 @@ func (h *Handler) register(c *gin.Context) {
 		return
 	}
 	_, err := h.service.Authorization.CreateUser(input)
-
 	switch {
 	case err == nil:
-		c.Status(http.StatusOK)
-		return
+		token, err := h.service.GenerateToken(input.Login, input.Password)
+		//c.Status(http.StatusOK)
+		if err != nil {
+			h.logger.Debugf("GenerateToken %s", err.Error())
+			newErrorResponse(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		authHeader := fmt.Sprintf("Bearer %s", token)
+		c.Header("Authorization", authHeader)
 	case err == models.ErrorLoginExist:
 		newErrorResponse(c, http.StatusConflict, err.Error())
 		h.logger.Debugf("login: %s already exist", input.Login)

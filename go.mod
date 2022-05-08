@@ -8,6 +8,7 @@ require (
 	github.com/caarlos0/env/v6 v6.9.1 // indirect
 	github.com/cockroachdb/cockroach-go v0.0.0-20180212155653-59c0560478b7 // indirect
 	github.com/cznic/ql v1.2.0 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-ini/ini v1.38.2 // indirect
 	github.com/go-playground/validator/v10 v10.11.0 // indirect

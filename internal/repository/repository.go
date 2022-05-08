@@ -13,7 +13,7 @@ type Repository struct {
 
 type Authorization interface {
 	CreateUser(user models.User) (int, error)
-	GetUserByLogin(user models.User) (bool, error)
+	GetUser(login, password string) (models.User, error)
 }
 
 func NewRepository(logger *logrus.Logger, db *sqlx.DB) *Repository {
