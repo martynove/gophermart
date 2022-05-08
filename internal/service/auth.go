@@ -36,6 +36,9 @@ func generatePasswordHash(password string) string {
 func (s *AuthService) GenerateToken(login, password string) (string, error) {
 	user, err := s.repo.GetUser(login, generatePasswordHash(password))
 	if err != nil {
+		if user.Login == "" {
+			return "", models.ErrorInvalidLoginOrPassword
+		}
 		return "", err
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{

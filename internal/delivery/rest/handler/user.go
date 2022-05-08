@@ -18,7 +18,6 @@ func (h *Handler) register(c *gin.Context) {
 	switch {
 	case err == nil:
 		token, err := h.service.GenerateToken(input.Login, input.Password)
-		//c.Status(http.StatusOK)
 		if err != nil {
 			h.logger.Debugf("GenerateToken %s", err.Error())
 			newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -42,6 +41,21 @@ func (h *Handler) login(c *gin.Context) {
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
 		h.logger.Debugf("error parsed json body: %s", err.Error())
+		return
+	}
+	token, err := h.service.GenerateToken(input.Login, input.Password)
+
+	switch {
+	case err == nil:
+		authHeader := fmt.Sprintf("Bearer %s", token)
+		c.Header("Authorization", authHeader)
+		return
+	case err == models.ErrorInvalidLoginOrPassword:
+		newErrorResponse(c, http.StatusUnauthorized, "")
+		return
+	default:
+		newErrorResponse(c, http.StatusInternalServerError, "")
+		h.logger.Debugf(err.Error())
 		return
 	}
 }
