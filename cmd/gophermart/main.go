@@ -27,8 +27,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("error load new configuration: %s", err.Error())
 	}
-
-	if cfg.DebugMode {
+	// switch on debug mode
+	if !cfg.DebugMode {
 		logger.SetLevel(logrus.DebugLevel)
 		gin.SetMode(gin.DebugMode)
 	}
