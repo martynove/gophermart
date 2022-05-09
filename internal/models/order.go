@@ -13,8 +13,8 @@ const (
 )
 
 type Order struct {
-	Number     int
-	Status     string
-	Accrual    decimal.Decimal
-	UploadedAt time.Time
+	Number     int             `json:"number"`
+	Status     string          `json:"status"`
+	Accrual    decimal.Decimal `json:"accrual,omitempty"`
+	UploadedAt time.Time       `json:"uploaded_at"`
 }

@@ -7,8 +7,8 @@ BEGIN;
     CREATE TABLE orders (
         number varchar (255) not null unique,
         user_id int references users (id) not null,
-        status varchar( 255) not null,
-        accrual decimal default 0,
+        status varchar( 255),
+        accrual decimal,
         uploaded_at timestamp with time zone not null
     );
 COMMIT;

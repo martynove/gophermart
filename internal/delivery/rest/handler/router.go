@@ -9,6 +9,7 @@ import (
 type Handler struct {
 	service *service.Service
 	logger  *logrus.Logger
+	userID  int
 }
 
 func NewHandler(logger *logrus.Logger, service *service.Service) *Handler {
@@ -33,7 +34,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	balance := router.Group("/api/user/balance", h.AuthMiddleware)
 	{
 		balance.GET("", h.getCurrentBalance)
-		balance.POST("withdraw", h.requestPaymentWithPoints)
+		balance.POST("/withdraw", h.requestPaymentWithPoints)
 		balance.GET("/withdrawals", h.getHistoryPayments)
 	}
 	return router

@@ -28,6 +28,7 @@ require (
 	github.com/openzipkin/zipkin-go v0.1.1 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
+	github.com/theplant/luhn v0.0.0-20170224032821-81a1a381387a // indirect
 	github.com/ugorji/go v1.2.7 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f // indirect
