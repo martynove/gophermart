@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/martynove/gophermart/internal/config"
 	"github.com/martynove/gophermart/internal/delivery/rest"
@@ -22,17 +21,21 @@ func main() {
 	// configure main logger
 	logger := logrus.New()
 	logger.SetFormatter(&logrus.JSONFormatter{})
-
+	gin.SetMode(gin.ReleaseMode)
 	cfg, err := config.NewConfig()
+
 	if err != nil {
 		log.Fatalf("error load new configuration: %s", err.Error())
 	}
 	// switch on debug mode
-	if !cfg.DebugMode {
+	if cfg.DebugMode {
 		logger.SetLevel(logrus.DebugLevel)
 		gin.SetMode(gin.DebugMode)
 	}
-	var db *sqlx.DB
+	db, err := repository.NewPostgresDB(cfg.DatabaseURI)
+	if err != nil {
+		logger.Fatalf("error PostgresDB repository creation: %s", err.Error())
+	}
 	apiRepository := repository.NewRepository(logger, db)
 	apiService := service.NewService(apiRepository, logger)
 	apiHandler := handler.NewHandler(logger, apiService)
